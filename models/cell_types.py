@@ -23,3 +23,8 @@ class UrbanCell:
     state: UrbanState = UrbanState.SU0
     material: HouseMaterial = HouseMaterial.WOOD
     time_of_state: float = 0.0
+
+    t12: float = 0.0
+    t23: float = 0.0
+    t34: float = 0.0
+    t45: float = 0.0
