@@ -1,7 +1,7 @@
 from enum import IntEnum
 from dataclasses import dataclass
 
-from models import ForestState, UrbanState
+from models.state_models import ForestState, UrbanState
 from models.materials_models import HouseMaterial
 
 
@@ -16,6 +16,7 @@ class ForestCell:
     state: ForestState = ForestState.SF0
     C: float = 0.0
     time_of_state: float = 0.0
+    Rmax_per_min: float = 0.0
 
 
 @dataclass
