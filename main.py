@@ -94,6 +94,9 @@ class WUIModel:
             return True
         return False
 
+    def _calculate_Rin(self, x: int, y: int) -> float:
+        return self._R_calculate(x, y, 0, 0)
+
     def run(self, total_time):
         current_time = 0.0
 
@@ -111,6 +114,8 @@ class WUIModel:
                     R_max = max(R_max, local_max)
             dt = self._calculate_dt_forest(R_max)
 
+            new_ignited_by_neigbours = set()
+            SF1_states = []
 
             for y in range(self.y_size):
                 for x in range(self.x_size):
@@ -135,7 +140,12 @@ class WUIModel:
                         if is_SF2_neig:
                             forest_cell.C += ostatok
                             if forest_cell.C > 1.0:
-                                pass
+                                SF1_states.append((x, y))
+                                new_ignited_by_neigbours.add((x, y))
+                    if forest_cell.state == ForestState.SF1:
+                        RIN = self._calculate_Rin(x, y)
+
+
 
             current_time += dt
 
