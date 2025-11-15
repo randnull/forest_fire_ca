@@ -1,3 +1,4 @@
-from models.cell_types import CellType, ForestCell, UrbanState
+from models.cell_types import ForestCell, UrbanState
 from models.state_models import ForestState, UrbanState
-from models.materials_models import HouseMaterial
+from models.materials_models import HouseMaterial, MaterialMap
+from models.enviroment_models import WeatherMap, WeatherType
