@@ -18,4 +18,9 @@ cellular automata model](https://www.sciencedirect.com/science/article/pii/S1364
 3. ignite some cell/house: ```ignite_forest/ignite_house```
 4. run the simulation with time: ```model.run(300)```
 5. create a plot with: ```plot_colormap_fire```
-See examples in Demo.ipynb 
+See examples in Demo.ipynb
+
+Result will be a plot with simulation: 
+
+![Иллюстрация к проекту](https://github.com/randnull/forest_fire_ca/blob/83a800ce538f37fd4b14d52949987bfb7f8dceb9/examples/save2025-11-16.png)
+
