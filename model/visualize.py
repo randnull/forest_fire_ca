@@ -52,7 +52,7 @@ def plot_colormap_fire(saves,
             (x1, y1),
             x2 - x1,
             y2 - y1,
-            fill=False,
+            fill=True,
             edgecolor="black",
             linewidth=1
         )
