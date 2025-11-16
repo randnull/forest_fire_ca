@@ -1,6 +1,6 @@
 import numpy as np
 
-from model.new_main import WUIModel
+from model.main import WUIModel
 from model.visualize import plot_colormap_fire
 from models import HouseMaterial, WeatherType
 from models.cell_types import UrbanCell
@@ -13,7 +13,6 @@ incombustible = np.zeros((H, W), dtype=bool)
 incombustible[25,:] = True
 incombustible[25,-1] = False
 
-print(incombustible)
 houses = [
     UrbanCell(
         cells=[(5, 5), (9, 9)],

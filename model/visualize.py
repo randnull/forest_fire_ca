@@ -7,8 +7,12 @@ from matplotlib import pyplot as plt, patches
 
 from models import ForestState
 
-def plot_colormap_fire(saves, H, W, ignition=[]):
-    bins = (0, 10, 15, 20, 25, 50, 60, 70, 80, 100, 200, 500, 700, 800, 1500, 2500)
+def plot_colormap_fire(saves,
+                       H,
+                       W,
+                       ignition=[],
+                       file_name="",
+                       bins=(0, 10, 15, 20, 25, 50, 60, 70, 80, 100, 200, 500, 700, 800, 1500, 2500)):
     map_fire_by_time = np.full((H, W), np.inf, dtype=np.float32)
 
     for t, forest_state, _ in saves:
@@ -30,13 +34,12 @@ def plot_colormap_fire(saves, H, W, ignition=[]):
                 if bins[i] <= map_fire_by_time[y, x] < bins[i+1]:
                     Z[y, x] = i
                     break
-    # print(Z)
 
     plt.figure()
     X, Y = np.meshgrid(np.arange(W+1), np.arange(H+1))
     im = plt.pcolormesh(X, Y, Z, shading='auto', cmap='Reds_r')
     cbar = plt.colorbar(im)
-    cbar.set_label('Время (мин) до активного огня')
+    cbar.set_label('Time (min) until active fire')
     tick_pos = [i for i in range(len(bins) - 1)]
     tick_lbl = [b for b in bins[:-1]]
     cbar.set_ticks(tick_pos)
@@ -58,9 +61,9 @@ def plot_colormap_fire(saves, H, W, ignition=[]):
     if ignition is not None:
         for (iy, ix) in ignition:
             plt.plot([ix], [iy], marker='^')
-
     file_to_save = "save" + str(datetime.datetime.now()) + ".png"
-    plt.title('Карта мест пожара по времени')
+    if file_name:
+        file_to_save = file_name
+    plt.title('Map of fire locations by time')
     plt.savefig(file_to_save, dpi=160)
     print(f"[saved] {file_to_save}")
-

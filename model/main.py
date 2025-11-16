@@ -9,7 +9,7 @@ import utils
 from models import ForestState, UrbanState, HouseMaterial, MaterialMap, WeatherType, WeatherMap
 from models.cell_types import UrbanCell
 
-r = []
+
 class WUIModel:
     def __init__(self,
                  height: int,
@@ -53,19 +53,8 @@ class WUIModel:
             self.house_index_grid[y1:y2, x1:x2] = i
             self.house_grid_mask[y1:y2, x1:x2] = True
 
-
         burnable = self.forest_mask & (~self.incomb_mask)
         self.state_forest[burnable] = ForestState.SF0
-        # self.state_forest[5, 5] = ForestState.SF2
-        # self.state_forest[40, 50] = ForestState.SF2
-
-        # self.state_forest[1, 2] = ForestState.SF2
-        # self.state_forest[3, 2] = ForestState.SF2
-        # self.state_forest[2, 1] = ForestState.SF2
-        # self.state_forest[2, 3] = ForestState.SF2
-        # self.state_forest[3, 3] = ForestState.SF2
-        # self.state_forest[3, 1] = ForestState.SF2
-        # self.state_forest[1, 1] = ForestState.SF2
 
 
     def _calculate_initial_state(self) -> None:
@@ -112,7 +101,7 @@ class WUIModel:
     def _R_calculate(self, R0: float) -> np.ndarray:
         tmp_dirs = np.array([1, 1, 1, 1, 1, 1, 1, 1])
 
-        Kw = 1.0 # в идеале это должно быть функцией конечно, но для простоты пока так
+        Kw = 1.0
         Ks = 1.0
         Kf = 1.0
 
@@ -240,7 +229,6 @@ class WUIModel:
 
 
     def _candidates_for_ignite_by_house(self, a, b, c, start, end):
-        global r
         a_norm = a / self.cell_length
         b_norm = b / self.cell_length
         c_norm = c / self.cell_length
@@ -249,12 +237,10 @@ class WUIModel:
         moore_direction = utils.DIRECTIONS[int(self.wind_direction % 360.0 // 45)]
 
         candidates = list()
-        # print(start, end, '123123123123')
+
         center_x = (start[1] + end[1]) // 2
         center_y = (start[0] + end[0]) // 2
-        # print(moore_direction)
-        # print(start, end)
-        # print(center_x, center_y)
+
         for dx in range(-max_dc, max_dc + 1):
             for dy in range(-max_dc, max_dc + 1):
                 new_y = center_y + dy
@@ -275,7 +261,6 @@ class WUIModel:
 
                 if result < 1.0:
                     candidates.append((new_y, new_x))
-        r = candidates
         return candidates
 
     def _calculate_pwnm(self, influence_cells, house_cells):
@@ -286,7 +271,6 @@ class WUIModel:
         arr = np.asarray(influence_cells, dtype=int)
         ys, xs = arr[:, 0], arr[:, 1]
         mask_tmp[ys, xs] = True
-        # print(mask_tmp[y1:y2, x1:x2])
 
         covered = int(mask_tmp[y1:y2, x1:x2].sum())
         area = (y2 - y1) * (x2 - x1)
@@ -332,7 +316,6 @@ class WUIModel:
                             PSn = 1.0
 
                         PAmn = self._calculate_pwnm(candidates, house_to_ignite.cells)
-                        print((y, x), self.house_grid_mask[y, x])
                         P = PTn * PW * PSn * PAmn
                         if random.random() < P:
                             self.ignite_house(index_of_house)
@@ -383,11 +366,11 @@ class WUIModel:
                         PSn = 0.3
                     else:
                         PSn = 1.0
-                    print((new_y, new_x), self.house_grid_mask[new_y, new_x], house_to_ignite.cells)
+
                     PAmn = self._calculate_pwnm(candidates, house_to_ignite.cells)
 
                     P = PTn * PW * PSn * PAmn
-                    # print(PTn, PSn, PAmn, PW)
+
                     if random.random() < P:
                         self.ignite_house(id_house)
 
@@ -395,11 +378,11 @@ class WUIModel:
         self._calculate_initial_state()
         t = 0.0
         saves = []
-        # print(self.dir_R, self.Rmax, self.dt_min)
+
         while t < total_minutes:
             self.step()
             t += self.dt_min
             saves.append((t, self.state_forest.copy(), deepcopy(self.houses)))
-        # print(self.state_forest)
+
         return saves
 
