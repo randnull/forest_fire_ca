@@ -13,6 +13,8 @@ cellular automata model](https://www.sciencedirect.com/science/article/pii/S1364
 
 # How to use? 
 
+## Command Line Usage
+
 1. import the model: ```from model.main import WUIModel```
 2. init with your params
 3. ignite some cell/house: ```ignite_forest/ignite_house```
@@ -20,7 +22,22 @@ cellular automata model](https://www.sciencedirect.com/science/article/pii/S1364
 5. create a plot with: ```plot_colormap_fire```
 See examples in Demo.ipynb
 
+## Web Interface
+
+### Installation
+
+1. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+2. Run the web application:
+```bash
+streamlit run app.py
+```
+
+3. Open your browser - the app will automatically open at `http://localhost:8501`
+
 Result will be a plot with simulation: 
 
 ![Иллюстрация к проекту](https://github.com/randnull/forest_fire_ca/blob/83a800ce538f37fd4b14d52949987bfb7f8dceb9/examples/save2025-11-16.png)
-

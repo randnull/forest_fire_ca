@@ -13,9 +13,11 @@ incombustible = np.zeros((H, W), dtype=bool)
 incombustible[25,:] = True
 incombustible[25,-1] = False
 
+square_cells = [(y, x) for y in range(0, 4) for x in range(10, 14)]
+
 houses = [
     UrbanCell(
-        cells=[(5, 5), (9, 9)],
+        cells=square_cells,
         material=HouseMaterial.WOOD
     )
 ]
@@ -29,7 +31,7 @@ model = WUIModel(
     temperature=30.0,
     wind_speed=15.0,
     relative_humidity=20.0,
-    wind_direction=30.0,
+    wind_direction=50.0,
     cell_length=L,
     weather_type=WeatherType.NEUTRAL,
 )

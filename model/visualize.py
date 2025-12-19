@@ -22,9 +22,9 @@ def plot_colormap_fire(saves,
     _, _, houses = saves[-1]
 
     for h in houses:
-        y1, x1 = h.cells[0]
-        y2, x2 = h.cells[1]
-        map_fire_by_time[y1:y2, x1:x2] = None
+        for (y, x) in h.cells:
+            if 0 <= y < H and 0 <= x < W:
+                map_fire_by_time[y, x] = None
 
     Z = np.full((H, W), np.nan, dtype=float)
 
@@ -46,17 +46,18 @@ def plot_colormap_fire(saves,
     cbar.set_ticklabels(tick_lbl)
 
     for h in houses:
-        y1, x1 = h.cells[0]
-        y2, x2 = h.cells[1]
-        rect = patches.Rectangle(
-            (x1, y1),
-            x2 - x1,
-            y2 - y1,
-            fill=True,
-            edgecolor="black",
-            linewidth=1
-        )
-        plt.gca().add_patch(rect)
+        for (y, x) in set(h.cells):
+            if 0 <= y < H and 0 <= x < W:
+                rect = patches.Rectangle(
+                    (x, y),
+                    1, 1,
+                    fill=True,
+                    edgecolor="black",
+                    linewidth=0.5,
+                    facecolor="gray",
+                    alpha=0.5
+                )
+                plt.gca().add_patch(rect)
 
     if ignition is not None:
         for (iy, ix) in ignition:

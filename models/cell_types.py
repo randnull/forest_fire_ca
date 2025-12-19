@@ -27,9 +27,16 @@ class UrbanCell:
     t34: float = 0.0
     t45: float = 0.0
 
-    def get_area(self):
-        x1, y1 = self.cells[0]
-        x2, y2 = self.cells[1]
-
-        return math.fabs(x2 - x1) * math.fabs(y2 - y1)
+    def get_area(self) -> float:
+        return float(len(set(self.cells)))
+    
+    def get_center(self) -> Tuple[int, int]:
+        if not self.cells:
+            return (0, 0)
+        unique_cells = list(set(self.cells))
+        ys = [y for y, _ in unique_cells]
+        xs = [x for _, x in unique_cells]
+        center_y = int(sum(ys) / len(ys))
+        center_x = int(sum(xs) / len(xs))
+        return (center_y, center_x)
 
