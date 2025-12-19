@@ -3,7 +3,8 @@ import numpy as np
 import osmnx as ox
 import rasterio
 from rasterio.features import rasterize
-
+from models.cell_types import UrbanCell
+from models import HouseMaterial
 
 def load_buildings(place: str):
     gdf = ox.features_from_place(place, tags={"building": True})
@@ -41,9 +42,6 @@ def rasterize_buildings(buildings, H, W, transform):
 
 
 def make_houses(house_raster):
-    from models.cell_types import UrbanCell
-    from models import HouseMaterial
-
     houses = []
 
     if house_raster.max() == 0:
